@@ -1,34 +1,44 @@
 ﻿using Common.Domain;
+using Common.Domain.Exceptions;
 
 namespace Shop.Domain.RoleAgg
 {
     public class Role : AggregateRoot
     {
-        public Role(string title, List<RolePermission> permissions) 
-        {
-            Title = title;
-            Permissions = permissions;
-        }
-        public Role(string title)
-        {
-            Title = title;
-            Permissions = new List<RolePermission>();
-        }
+        #region Properties
+            public string Title { get; private set; }
+            public List<RolePermission> Permissions { get; private set; }
+        #endregion
 
-        public string Title { get; private set; }
-        public List<RolePermission> Permissions { get; private set; }
+        #region Functions
 
-    }
-    public class RolePermission : BaseEntity
-    {
+            private Role()
+            {
+                
+            }
+            public Role(string title, List<RolePermission> permissions) 
+            {
+                NullOrEmptyDomainDataException.CheckString(title,nameof(Title));
+                Title = title;
+                Permissions = permissions;
+            }
+            public Role(string title)
+            {
+                NullOrEmptyDomainDataException.CheckString(title,nameof(Title));
+                Title = title;
+                Permissions = new List<RolePermission>();
+            }
 
-    }
-
-    public enum Permission 
-    {
-        PanelAdmin,
-        EditProfile,
-        ChangePassword,
-
+            public void Edit(string title)
+            {
+                NullOrEmptyDomainDataException.CheckString(title,nameof(Title));
+                Title = title;
+            }
+            public void SetPermissions(List<RolePermission> permissions)
+            {
+                Permissions = permissions;
+            }
+        #endregion
+        
     }
 }

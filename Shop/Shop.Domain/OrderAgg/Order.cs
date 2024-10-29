@@ -2,41 +2,73 @@
 using Shop.Domain.OrderAgg.Enum;
 using Shop.Domain.OrderAgg.ValueObject;
 using System.Reflection.Metadata.Ecma335;
+using Common.Domain.Exceptions;
 
 namespace Shop.Domain.OrderAgg
 {
     public class Order : AggregateRoot
     {
-        public long UserId { get; set; }
+        private Order()
+        {
+            
+        }
+        public Order(long userId)
+        {
+            UserId = userId;
+            OrderStatus = OrderStatus.Pennding;
+            Items = new List<OrderItem>();
+        }
+
+        public long UserId { get; private set; }
         public OrderStatus OrderStatus { get; private set; }
         public OrderDiscount? Discount { get; private set; }
+        public OrderAddress? Address { get; private set; }
         public List<OrderItem> Items { get; private set; }
-        public int TotalPrice => Items.Sum(x => x.TotalPrice);
+        public ShippingMethod? ShippingMethod { get; set; }
+        public DateTime? LastUpdate { get; private set; }
+        public int TotalPrice {
+            get
+            {
+                var totalPrice = Items.Sum(x => x.TotalPrice);
+                if (ShippingMethod != null)
+                    totalPrice += this.ShippingMethod.ShippingCost;
+                if (Discount != null)
+                    totalPrice -= Discount.DiscountAmount;
+                return totalPrice;
+            }
+            
+        }
+    
         public int ItemCount => Items.Count();
 
-
-    }
-    public class OrderItem : BaseEntity
-    {
-        public OrderItem(long inventoryId, int count, int price)
+        public void AddItem(OrderItem item)
         {
-            InventoryId = inventoryId;
-            Count = count;
-            Price = price;
+            Items.Add(item);
         }
 
-        public long OrderId { get; internal set; }
-        public long InventoryId { get; private set; }
-        public int Count { get; private set; }
-        public int Price { get; private set; }
-        public int TotalPrice => TotalPrice * Price;
-        
-        public void ChangeCount(int newCount)
+        public void RemoveItem(long orderItemId)
         {
-            if (newCount < 1)
-                return;
-            Count = newCount;
+            var currentItem = Items.FirstOrDefault(x => x.Id == orderItemId);
+            if(currentItem == null) throw new NullOrEmptyDomainDataException("چیزی برای حذف یافت نشد");
+            Items.Remove(currentItem);
+        }
+        public void ChangeCountItem(long orderItemId , int newCount)
+        {
+            var currentItem = Items.FirstOrDefault(x => x.Id == orderItemId);
+            if(currentItem == null) throw new NullOrEmptyDomainDataException("چیزی یافت نشد");
+            currentItem.ChangeCount(newCount);
         }
 
+        public void ChangeStatus(OrderStatus orderStatus)
+        {
+            OrderStatus = orderStatus;
+            LastUpdate = DateTime.Now;
+        }
+
+        public void Checkout(OrderAddress orderAddress)
+        {
+            Address = orderAddress;
+            OrderStatus = OrderStatus.Finally;
+        }
     }
 }
