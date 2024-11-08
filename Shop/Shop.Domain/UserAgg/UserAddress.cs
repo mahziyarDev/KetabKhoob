@@ -40,7 +40,7 @@ public class UserAddress : BaseEntity
         ActiveAddress = activeAddress;
     }
 
-    public void Guard(string shire, string city, string postalCode, string postalAddress, string name, string family, string nationalCode, bool activeAddress)
+    private void Guard(string shire, string city, string postalCode, string postalAddress, string name, string family, string nationalCode, bool activeAddress)
     {
         
         NullOrEmptyDomainDataException.CheckString(shire, nameof(shire));

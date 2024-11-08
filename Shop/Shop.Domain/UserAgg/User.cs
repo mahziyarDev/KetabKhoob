@@ -87,7 +87,7 @@ public class User : AggregateRoot
         Roles.AddRange(Roles);
     }
 
-    public void Guard(string phoneNumber, string email,IDomainUserService domainUserService)
+    private void Guard(string phoneNumber, string email,IDomainUserService domainUserService)
     {
         NullOrEmptyDomainDataException.CheckString(phoneNumber,nameof(phoneNumber));
         NullOrEmptyDomainDataException.CheckString(email,nameof(email));

@@ -77,7 +77,7 @@ public class Product : AggregateRoot
         Specifications = specs;
     }
 
-    public void Guard(string title, string imageName, string description ,string slug,IProductDomainService productDomainService)
+    private void Guard(string title, string imageName, string description ,string slug,IProductDomainService productDomainService)
     {
         NullOrEmptyDomainDataException.CheckString(title,nameof(title));
         NullOrEmptyDomainDataException.CheckString(description,nameof(description));

@@ -40,7 +40,7 @@ public class OrderAddress
         NationalCode = nationalCode;
     }
 
-    public void Guard(string shire, string city, string postalCode,
+    private void Guard(string shire, string city, string postalCode,
         string postalAddress, string name, string family, string nationalCode)
     {
         
