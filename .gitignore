@@ -1,3 +1,7 @@
+Common/Common.Application/bin/
+Common/Common.Application/obj/
+Common/Common.Domain/bin/
+Common/Common.Domain/obj/
 Shop/Shop.Application/bin/
 Shop/Shop.Application/obj/
 Shop/Shop.Domain/bin/

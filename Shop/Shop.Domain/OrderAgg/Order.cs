@@ -43,6 +43,15 @@ namespace Shop.Domain.OrderAgg
 
         public void AddItem(OrderItem item)
         {
+            if (OrderStatus == OrderStatus.Pennding)
+                throw new InvalidDomainDataException("امکان ثبت محصول در این سفارش وجود ندارد");
+            
+            var oldItem = Items.FirstOrDefault(x=>x.InventoryId == item.InventoryId);
+            if (oldItem != null)
+            {
+                oldItem.ChangeCount(oldItem.Count + item.Count);
+                return;
+            }
             Items.Add(item);
         }
 
