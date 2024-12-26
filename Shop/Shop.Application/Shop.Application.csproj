@@ -8,8 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Products\AddImage\" />
-      <Folder Include="Products\Create\" />
-      <Folder Include="Products\Edit\" />
       <Folder Include="Products\RemoveImage\" />
       <Folder Include="Roles\Create\" />
       <Folder Include="Roles\Edit\" />
@@ -39,6 +37,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Common\Common.Application\Common.Application.csproj" />
       <ProjectReference Include="..\Shop.Domain\Shop.Domain.csproj" />
+      <ProjectReference Include="..\Shop.Infrastructure\Shop.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
