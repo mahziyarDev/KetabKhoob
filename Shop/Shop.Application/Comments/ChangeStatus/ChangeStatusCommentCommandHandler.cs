@@ -19,7 +19,7 @@ public class ChangeStatusCommentCommandHandler : IBaseCommandHandler<ChangeStatu
         if (comment == null)
             return OperationResult.NotFound();
         comment.ChangeStatus(request.CommentStatus);
-        await _commentRepository.Save();
+        await _commentRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
 }

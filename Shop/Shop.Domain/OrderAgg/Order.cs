@@ -43,6 +43,7 @@ namespace Shop.Domain.OrderAgg
 
         public void AddItem(OrderItem item)
         {
+            ChangeOrderGuard();
             if (OrderStatus == OrderStatus.Pennding)
                 throw new InvalidDomainDataException("امکان ثبت محصول در این سفارش وجود ندارد");
             
@@ -57,17 +58,32 @@ namespace Shop.Domain.OrderAgg
 
         public void RemoveItem(long orderItemId)
         {
+            ChangeOrderGuard();
             var currentItem = Items.FirstOrDefault(x => x.Id == orderItemId);
             if(currentItem == null) throw new NullOrEmptyDomainDataException("چیزی برای حذف یافت نشد");
             Items.Remove(currentItem);
         }
         public void ChangeCountItem(long orderItemId , int newCount)
         {
+            ChangeOrderGuard();
             var currentItem = Items.FirstOrDefault(x => x.Id == orderItemId);
             if(currentItem == null) throw new NullOrEmptyDomainDataException("چیزی یافت نشد");
             currentItem.ChangeCount(newCount);
         }
-
+        public void IncreaseItemCount(long itemId, int count)
+        {
+            ChangeOrderGuard();
+            var currentItem = Items.FirstOrDefault(x => x.Id == itemId);
+            if (currentItem == null) throw new NullOrEmptyDomainDataException("چیزی یافت نشد");
+            currentItem.IncreaseCount(count);
+        }
+        public void DecreaseItemCount(long itemId, int count)
+        {
+            ChangeOrderGuard();
+            var currentItem = Items.FirstOrDefault(x => x.Id == itemId);
+            if (currentItem == null) throw new NullOrEmptyDomainDataException("چیزی یافت نشد");
+            currentItem.DecreaseCount(count);
+        }
         public void ChangeStatus(OrderStatus orderStatus)
         {
             OrderStatus = orderStatus;
@@ -76,8 +92,15 @@ namespace Shop.Domain.OrderAgg
 
         public void Checkout(OrderAddress orderAddress)
         {
+            ChangeOrderGuard();
             Address = orderAddress;
             OrderStatus = OrderStatus.Finally;
+        }
+
+        private void ChangeOrderGuard()
+        {
+            if (OrderStatus != OrderStatus.Pennding)
+                throw new InvalidDomainDataException("امکان ویرایش این سفارش وجود ندارد.");
         }
     }
 }

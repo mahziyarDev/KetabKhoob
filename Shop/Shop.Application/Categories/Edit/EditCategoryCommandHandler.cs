@@ -24,7 +24,7 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         if (category == null)
             return OperationResult.NotFound();
         category.Edit(request.Title,request.Slug,request.SeoData,_categoryDomainService);
-        await _categoryRepository.Save();
+        await _categoryRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
 }

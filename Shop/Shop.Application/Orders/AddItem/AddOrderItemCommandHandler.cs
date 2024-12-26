@@ -29,19 +29,21 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
         
         //اگر مقدار order برابر با null بود مقدار جدیدی را new میکند وبه order میدهد
         var order = await _orderRepository.GetCurrentUserOrderAsync(request.UserId) ?? new Order(request.UserId);
-
-
+        
         order.AddItem(new OrderItem(inventory.ProductId,request.Count,inventory.Price));
-        await _orderRepository.Save();
+        
+        if (ItemCountBeggreThanInventoryCount(inventory,order))
+            return OperationResult.Error("تعداد محثولات موجود در انبار کمتر از تعداد درخواست شماست");
+        
+        await _orderRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
 
     private bool ItemCountBeggreThanInventoryCount(InventoryResult inventory, Order order)
     {
         var orderItem = order.Items.FirstOrDefault(x=>x.Id == inventory.Id);
-        if (inventory == null)
-        {
-            
-        }
+        if (orderItem.Count > inventory.Count)
+            return true;
+        return false;
     }
 }

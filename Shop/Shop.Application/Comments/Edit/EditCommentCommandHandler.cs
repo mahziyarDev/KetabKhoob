@@ -18,7 +18,7 @@ public class EditCommentCommandHandler : IBaseCommandHandler<EditCommentCommand>
         if (comment == null || comment.UserId != request.UserId)
             return OperationResult.NotFound();
         comment.Edit(request.Text);
-        await _commentRepository.Save();
+        await _commentRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
     

@@ -18,8 +18,8 @@ namespace Common.Domain.Repository
 
         void Update(T entity);
 
-        Task<int> Save();
-
+        Task<int> SaveChangeAsync();
+        
         Task<bool> ExistsAsync(Expression<Func<T, bool>> expression);
 
         bool Exists(Expression<Func<T, bool>> expression);

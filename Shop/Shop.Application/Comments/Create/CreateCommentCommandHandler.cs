@@ -17,7 +17,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
     {
         var comment = new Comment(request.UserId, request.ProductId, request.Text);
         await _commentRepository.AddAsync(comment);
-        await _commentRepository.Save();
+        await _commentRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
 }

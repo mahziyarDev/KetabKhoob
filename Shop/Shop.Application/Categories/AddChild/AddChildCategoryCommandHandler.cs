@@ -25,7 +25,7 @@ public class AddChildCategoryCommandHandler : IBaseCommandHandler<AddChildCatego
             return OperationResult.NotFound();
         
         category.AddChild(request.Title,request.Slug,request.SeoData,_categoryDomainService);
-        await _categoryRepository.Save();
+        await _categoryRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
 }

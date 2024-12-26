@@ -23,7 +23,7 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
     {
         var category = new Category(request.Title,request.Slug,request.SeoData,_categoryDomainService);
         await _categoryRepository.AddAsync(category);
-        await _categoryRepository.Save();
+        await _categoryRepository.SaveChangeAsync();
         return OperationResult.Success();
     }
 }

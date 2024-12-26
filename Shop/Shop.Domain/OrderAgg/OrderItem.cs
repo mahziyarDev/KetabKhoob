@@ -20,6 +20,18 @@ namespace Shop.Domain.OrderAgg
         public int Price { get; private set; }
         public int TotalPrice => TotalPrice * Price;
         
+        public void IncreaseCount(int count)
+        {
+            Count += count;
+        }
+        public void DecreaseCount(int count)
+        {
+            if (Count == 1)
+                return;
+            if (Count - count <=0)
+                return;
+            Count -= count;
+        }
         public void ChangeCount(int newCount)
         {
             if (newCount < 1)
