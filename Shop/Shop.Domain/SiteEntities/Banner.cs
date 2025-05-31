@@ -8,8 +8,8 @@ public class Banner : BaseEntity
 {
     #region Properties
 
-    public string Link { get; private set; } = string.Empty;
-    public string ImageName { get; private set; } = string.Empty;
+    public string Link { get; private set; }
+    public string ImageName { get; private set; }
     public PositionBanner PositionBanner { get; set; }
 
     #endregion

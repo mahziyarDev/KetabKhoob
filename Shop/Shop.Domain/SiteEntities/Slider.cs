@@ -16,14 +16,14 @@ public class Slider : BaseEntity
 
     #region Function
 
-    public Slider(string title,string link ,string imageName ,PositionBanner positionBanner)
+    public Slider(string title,string link ,string imageName)
     {
         Guard(title ,link,imageName);
         Title = title;
         Link = link;
         ImageName = imageName;
     }
-    public void Edit(string title ,string link ,string imageName ,PositionBanner positionBanner)
+    public void Edit(string title ,string link ,string imageName)
     {
         Guard(title,link,imageName);
         Title = title;

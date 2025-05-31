@@ -9,16 +9,10 @@
     <ItemGroup>
       <Folder Include="Sellers\ChangeStatus\" />
       <Folder Include="Sellers\DeleteInventory\" />
-      <Folder Include="SiteEntities\Banners\Create\" />
-      <Folder Include="SiteEntities\Banners\Edit\" />
-      <Folder Include="SiteEntities\Sliders\Create\" />
-      <Folder Include="SiteEntities\Sliders\Edit\" />
       <Folder Include="Users\AddAddress\" />
       <Folder Include="Users\ChargeWallet\" />
-      <Folder Include="Users\Create\" />
       <Folder Include="Users\DeleteAddress\" />
       <Folder Include="Users\EditAddress\" />
-      <Folder Include="Users\Edit\" />
       <Folder Include="Users\Register\" />
     </ItemGroup>
 

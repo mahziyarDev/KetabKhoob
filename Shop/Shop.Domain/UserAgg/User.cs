@@ -8,6 +8,7 @@ namespace Shop.Domain.UserAgg;
 public class User : AggregateRoot
 {
     public string Name { get; private set; }
+    public string AvatarName { get; set; }
     public string Family { get; private set; }
     public string PhoneNumber { get; private set; }
     public string Email { get; private set; }
@@ -19,7 +20,7 @@ public class User : AggregateRoot
 
     public User(string name, string family, string phoneNumber, string email, string password,
         Gender gender,
-        IDomainUserService domainUserService)
+        IUserDomainService domainUserService)
     {
         Guard(phoneNumber,email,domainUserService);
         Name = name;
@@ -30,13 +31,13 @@ public class User : AggregateRoot
         Gender = gender;
     }
 
-    public static User RegisterUser(string email,string phoneNumber, string password,IDomainUserService domainUserService)
+    public static User RegisterUser(string email,string phoneNumber, string password,IUserDomainService domainUserService)
     {
         return new User("","",phoneNumber,email,password,Enum.Gender.None,domainUserService);
     }
     public void Edit(string name, string family, string phoneNumber, string email,
         Gender gender,
-        IDomainUserService domainUserService)
+        IUserDomainService domainUserService)
     {
         Guard(phoneNumber,email,domainUserService);
         Name = name;
@@ -45,7 +46,13 @@ public class User : AggregateRoot
         Email = email;
         Gender = gender;
     }
+    public void SetAvatar(string imageName)
+    {
+        if (string.IsNullOrWhiteSpace(imageName))
+            imageName = "avatar.png";
 
+        AvatarName = imageName;
+    }
     public void AddAddresses(UserAddress address)
     {
         address.UserId = Id;
@@ -87,7 +94,7 @@ public class User : AggregateRoot
         Roles.AddRange(Roles);
     }
 
-    private void Guard(string phoneNumber, string email,IDomainUserService domainUserService)
+    private void Guard(string phoneNumber, string email,IUserDomainService domainUserService)
     {
         NullOrEmptyDomainDataException.CheckString(phoneNumber,nameof(phoneNumber));
         NullOrEmptyDomainDataException.CheckString(email,nameof(email));
