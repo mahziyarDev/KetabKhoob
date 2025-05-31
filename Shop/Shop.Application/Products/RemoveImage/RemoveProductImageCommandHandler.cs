@@ -23,11 +23,11 @@ public class RemoveProductImageCommandHandler : IBaseCommandHandler<RemoveProduc
 
     public async Task<OperationResult> Handle(RemoveProductImageCommand request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetTracking(request.ProductId);
+        var product = await _productRepository.GetTracking(request.ProductId,cancellationToken);
         if (product == null) return OperationResult.NotFound();
 
         var imageName = product.RemoveImage(request.ImageId);
-        await _productRepository.SaveChangeAsync();
+        await _productRepository.SaveChangeAsync(cancellationToken);
         _fileService.DeleteFile(Directories.ProductGalleryImage, imageName);
         return OperationResult.Success();
     }

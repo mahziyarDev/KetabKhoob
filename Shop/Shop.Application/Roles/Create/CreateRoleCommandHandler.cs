@@ -22,8 +22,8 @@ public class CreateRoleCommandHandler : IBaseCommandHandler<CreateRoleCommand>
             permissions.Add(new RolePermission(x));
         });
         var role = new Role(request.Title, permissions);
-        await _roleRepository.AddAsync(role);
-        await _roleRepository.SaveChangeAsync();
+        await _roleRepository.AddAsync(role,cancellationToken);
+        await _roleRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

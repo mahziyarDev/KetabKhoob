@@ -1,6 +1,7 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
 using Shop.Domain.SellerAgg.Enum;
+using Shop.Domain.SellerAgg.Service;
 
 namespace Shop.Domain.SellerAgg;
 
@@ -22,12 +23,15 @@ public class Seller : AggregateRoot
 
         private Seller(){}
         
-        public Seller(long userId, string shopName, string nationalCode)
-        {
+        public Seller(long userId, string shopName, string nationalCode, ISellerDomainService domainService)
+        { 
+            Gurad(shopName,nationalCode);
             UserID = userId;
             ShopName = shopName;
             NationalCode = nationalCode;
             Inventories = new List<SellerInventory>();
+            if(domainService.IsValidSellerInformation(this) == false)
+                throw new InvalidDomainDataException("اطلاعات نامعتبر است");
         }
         public void ChangeStatus(SellerStatus sellerStatus)
         {
@@ -35,12 +39,19 @@ public class Seller : AggregateRoot
             LastUpdate = DateTime.Now;
         }
 
-        public void Edit(string shopName, string nationalCode)
+        public void Edit(string shopName, string nationalCode,SellerStatus sellerStatus, ISellerDomainService domainService)
         {
             Gurad(shopName,nationalCode);
-             ShopName = shopName;
-             NationalCode = nationalCode;
-             SellerStatus = SellerStatus.InActive;
+            if (nationalCode != NationalCode)
+            {
+                if (domainService.NationalCodeExistInDataBase(nationalCode))
+                {
+                    throw new InvalidDomainDataException("کد ملی متعلق به شخص دیگری است");
+                }
+            }
+            ShopName = shopName;
+            NationalCode = nationalCode;
+            SellerStatus = sellerStatus;
         }
 
         public void AddInventory(SellerInventory inventory)
@@ -49,15 +60,26 @@ public class Seller : AggregateRoot
                 throw new InvalidDomainDataException("این محصول قبلا ثبت شده است");
             Inventories.Add(inventory);
         }
-        
-        public void EditInventory(SellerInventory inventory)
+
+    
+        // public void EditInventory(SellerInventory inventory)
+        // {
+        //     var currentInventory = Inventories.FirstOrDefault(x => x.Id == inventory.Id);
+        //     if (currentInventory == null)
+        //         return;
+        //     
+        //     Inventories.Remove(currentInventory);
+        //     Inventories.Add(inventory);
+        // }
+        //
+        public void EditInventory(long inventoryId,int price,int count,int? discountPercentage)
         {
-            var currentInventory = Inventories.FirstOrDefault(x => x.Id == inventory.Id);
+            var currentInventory = Inventories.FirstOrDefault(x => x.Id == inventoryId);
             if (currentInventory == null)
-                return;
+                throw new InvalidDomainDataException("محصول یافت نشد.");
+            //TODO : Check Inventory
+            currentInventory.Edit(count,price,discountPercentage);
             
-            Inventories.Remove(currentInventory);
-            Inventories.Add(inventory);
         }
         public void DeleteInventory(long inventoryId)
         {

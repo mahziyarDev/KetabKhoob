@@ -35,7 +35,7 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
         if (ItemCountBeggreThanInventoryCount(inventory,order))
             return OperationResult.Error("تعداد محثولات موجود در انبار کمتر از تعداد درخواست شماست");
         
-        await _orderRepository.SaveChangeAsync();
+        await _orderRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 

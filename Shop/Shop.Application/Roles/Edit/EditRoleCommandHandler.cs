@@ -15,7 +15,7 @@ public class EditRoleCommandHandler : IBaseCommandHandler<EditRoleCommand>
     }
     public async Task<OperationResult> Handle(EditRoleCommand request, CancellationToken cancellationToken)
     {
-        var role = await _roleRepository.GetTracking(request.Id);
+        var role = await _roleRepository.GetTracking(request.Id,cancellationToken);
         if (role == null) return OperationResult.NotFound();
         
         role.Edit(request.Title);
@@ -25,7 +25,7 @@ public class EditRoleCommandHandler : IBaseCommandHandler<EditRoleCommand>
             permissions.Add(new RolePermission(x));
         });
         role.SetPermissions(permissions);
-        await _roleRepository.SaveChangeAsync();
+        await _roleRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

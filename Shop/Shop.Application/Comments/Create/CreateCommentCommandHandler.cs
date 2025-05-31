@@ -16,8 +16,8 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
     public async Task<OperationResult> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
         var comment = new Comment(request.UserId, request.ProductId, request.Text);
-        await _commentRepository.AddAsync(comment);
-        await _commentRepository.SaveChangeAsync();
+        await _commentRepository.AddAsync(comment,cancellationToken);
+        await _commentRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

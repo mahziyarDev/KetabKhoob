@@ -23,7 +23,7 @@ public class CheckOutOrderCommandHandler : IBaseCommandHandler<CheckOutOrderComm
         var orderAddress = new OrderAddress(request.Shire,request.City,request.PostalCode,
             request.PostalAddress,request.Name,request.Family,request.NationalCode);
         currentOrder.Checkout(orderAddress);
-        await _orderRepository.SaveChangeAsync();
+        await _orderRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

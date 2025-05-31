@@ -21,7 +21,7 @@ public class DecreaseOrderItemCountCommandHandler : IBaseCommandHandler<Increase
         if (currentOrder == null)
             return OperationResult.NotFound();
         currentOrder.DecreaseItemCount(request.ItemId,request.Count);
-        await _orderRepository.SaveChangeAsync();
+        await _orderRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

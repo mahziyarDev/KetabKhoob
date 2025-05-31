@@ -25,7 +25,7 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
     }
     public async Task<OperationResult> Handle(EditProductCommand request, CancellationToken cancellationToken)
     {
-        var currentProduct = await _productRepository.GetAsync(request.ProductId);
+        var currentProduct = await _productRepository.GetAsync(request.ProductId,cancellationToken);
         if(currentProduct == null) return OperationResult.NotFound();
         
         currentProduct.Edit(request.Title,request.Description,request.CategoryId,
@@ -44,7 +44,7 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
         });
         currentProduct.SetSpecifications(productSpecifications);
         
-        await _productRepository.SaveChangeAsync();
+        await _productRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

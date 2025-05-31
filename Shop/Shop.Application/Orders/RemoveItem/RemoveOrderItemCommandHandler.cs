@@ -22,7 +22,7 @@ public class RemoveOrderItemCommandHandler : IBaseCommandHandler<RemoveOrderItem
             return OperationResult.NotFound();
         
         currentOrder.RemoveItem(request.ItemId);
-        await _orderRepository.SaveChangeAsync();
+        await _orderRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

@@ -32,7 +32,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
             request.CategoryId,request.SubCategoryId,request.SecondarySubCategoryId,
             request.Slug,request.SeoData,_productDomainService);
         
-        await _productRepository.AddAsync(product);
+        await _productRepository.AddAsync(product,cancellationToken);
         
         var productSpecifications = new List<ProductSpecification>();
         request.Specifications.ToList().ForEach(x =>
@@ -41,7 +41,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
         });
         product.SetSpecifications(productSpecifications);
         
-        await _productRepository.SaveChangeAsync();
+        await _productRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

@@ -22,13 +22,13 @@ public class AddProductImageCommandHandler : IBaseCommandHandler<AddProductImage
 
     public async Task<OperationResult> Handle(AddProductImageCommand request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetTracking(request.ProductId);
+        var product = await _productRepository.GetTracking(request.ProductId,cancellationToken);
         if (product == null) return OperationResult.NotFound();
 
         var imageName = await _fileService.SaveFileAndGenerateName(request.ImageFile, Directories.ProductGalleryImage);
         var productImage = new ProductImage(imageName, request.Sequence);
         product.AddImage(productImage);
-        await _productRepository.SaveChangeAsync();
+        await _productRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

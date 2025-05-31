@@ -20,12 +20,12 @@ public class AddChildCategoryCommandHandler : IBaseCommandHandler<AddChildCatego
     
     public async Task<OperationResult> Handle(AddChildCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetTracking(request.ParentId);
+        var category = await _categoryRepository.GetTracking(request.ParentId,cancellationToken);
         if (category == null)
             return OperationResult.NotFound();
         
         category.AddChild(request.Title,request.Slug,request.SeoData,_categoryDomainService);
-        await _categoryRepository.SaveChangeAsync();
+        await _categoryRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

@@ -14,11 +14,11 @@ public class EditCommentCommandHandler : IBaseCommandHandler<EditCommentCommand>
     }
     public async Task<OperationResult> Handle(EditCommentCommand request, CancellationToken cancellationToken)
     {
-        var comment = await _commentRepository.GetAsync(request.Id);
+        var comment = await _commentRepository.GetAsync(request.Id,cancellationToken);
         if (comment == null || comment.UserId != request.UserId)
             return OperationResult.NotFound();
         comment.Edit(request.Text);
-        await _commentRepository.SaveChangeAsync();
+        await _commentRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
     

@@ -20,7 +20,7 @@ public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<Increase
         if (currentOrder == null)
             return OperationResult.NotFound();
         currentOrder.IncreaseItemCount(request.ItemId,request.Count);
-        await _orderRepository.SaveChangeAsync();
+        await _orderRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }

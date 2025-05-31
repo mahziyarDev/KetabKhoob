@@ -20,11 +20,11 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
     
     public async Task<OperationResult> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetAsync(request.Id);
+        var category = await _categoryRepository.GetAsync(request.Id,cancellationToken);
         if (category == null)
             return OperationResult.NotFound();
         category.Edit(request.Title,request.Slug,request.SeoData,_categoryDomainService);
-        await _categoryRepository.SaveChangeAsync();
+        await _categoryRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }
 }
