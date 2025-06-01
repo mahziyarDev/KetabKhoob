@@ -22,7 +22,7 @@ public class User : AggregateRoot
         Gender gender,
         IUserDomainService domainUserService)
     {
-        Guard(phoneNumber,email,domainUserService);
+        Guard(phoneNumber, email, domainUserService);
         Name = name;
         Family = family;
         PhoneNumber = phoneNumber;
@@ -31,15 +31,16 @@ public class User : AggregateRoot
         Gender = gender;
     }
 
-    public static User RegisterUser(string email,string phoneNumber, string password,IUserDomainService domainUserService)
+    public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)
     {
-        return new User("","",phoneNumber,email,password,Enum.Gender.None,domainUserService);
+        return new User("", "", phoneNumber, null, password, Gender.None, userDomainService);
     }
+
     public void Edit(string name, string family, string phoneNumber, string email,
         Gender gender,
         IUserDomainService domainUserService)
     {
-        Guard(phoneNumber,email,domainUserService);
+        Guard(phoneNumber, email, domainUserService);
         Name = name;
         Family = family;
         PhoneNumber = phoneNumber;
@@ -53,31 +54,27 @@ public class User : AggregateRoot
 
         AvatarName = imageName;
     }
-    public void AddAddresses(UserAddress address)
+    public void AddAddress(UserAddress address)
     {
         address.UserId = Id;
         Addresses.Add(address);
     }
 
-    public void EditAddresses(UserAddress address)
+    public void EditAddress(UserAddress address, long addressId)
     {
-        var oldAddress = Addresses.FirstOrDefault(x => x.Id == address.Id);
+        var oldAddress = Addresses.FirstOrDefault(f => f.Id == addressId);
         if (oldAddress == null)
-        {
-            throw new NullOrEmptyDomainDataException("Address not found");
-        }
+            throw new NullOrEmptyDomainDataException("Address Not found");
 
-        Addresses.Remove(oldAddress);
-        Addresses.Add(address);
+
+        oldAddress.Edit(address.Shire, address.City, address.PostalCode, address.PostalAddress,
+            address.Name, address.Family, address.NationalCode, address.PhoneNumber);
     }
-
-    public void DeleteAddresses(UserAddress address)
+    public void DeleteAddress(long addressId)
     {
-        var oldAddress = Addresses.FirstOrDefault(x => x.Id == address.Id);
+        var oldAddress = Addresses.FirstOrDefault(f => f.Id == addressId);
         if (oldAddress == null)
-        {
-            throw new NullOrEmptyDomainDataException("Address not found");
-        }
+            throw new NullOrEmptyDomainDataException("Address Not found");
 
         Addresses.Remove(oldAddress);
     }
@@ -94,26 +91,26 @@ public class User : AggregateRoot
         Roles.AddRange(Roles);
     }
 
-    private void Guard(string phoneNumber, string email,IUserDomainService domainUserService)
+    private void Guard(string phoneNumber, string email, IUserDomainService domainUserService)
     {
-        NullOrEmptyDomainDataException.CheckString(phoneNumber,nameof(phoneNumber));
-        NullOrEmptyDomainDataException.CheckString(email,nameof(email));
+        NullOrEmptyDomainDataException.CheckString(phoneNumber, nameof(phoneNumber));
+        NullOrEmptyDomainDataException.CheckString(email, nameof(email));
 
         if (phoneNumber.Length != 11)
             throw new InvalidDomainDataException("شماره موبایل نامعتبر است");
-        
-        if(PhoneNumber != phoneNumber)
+
+        if (PhoneNumber != phoneNumber)
             if (domainUserService.IsPhoneNumberExist(phoneNumber))
                 throw new InvalidCastException("شماره تلفن وارده شده نامعتبر است");
 
-        
+
         if (email.IsValidEmail() == false)
             throw new InvalidDomainDataException("ایمیل نامعتبر است");
-        
-        if(Email != email)
+
+        if (Email != email)
             if (domainUserService.IsEmailExist(email))
                 throw new InvalidCastException("ایمیل وارده شده نامعتبر است");
-        
-       
+
+
     }
 }
