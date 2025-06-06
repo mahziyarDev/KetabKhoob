@@ -25,7 +25,7 @@ internal class CreateSliderCommandHandler : IBaseCommandHandler<CreateSliderComm
             .SaveFileAndGenerateName(request.ImageFile, Directories.SliderImages);
         var slider = new Slider(request.Title,request.Link,imageName);
 
-        _sliderRepository.Add(slider,cancellationToken);
+        _sliderRepository.Add(slider);
         await _sliderRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }

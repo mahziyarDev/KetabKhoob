@@ -20,7 +20,7 @@ public class RegisterCommandHandler : IBaseCommandHandler<RegisterCommand>
     {
         var user = User.RegisterUser(request.PhoneNumber.Value, Sha256Hasher.Hash(request.Password), _domainService);
 
-        _userRepository.Add(user,cancellationToken);
+        _userRepository.Add(user);
         await _userRepository.SaveChangeAsync(cancellationToken);
         return OperationResult.Success();
     }

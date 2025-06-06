@@ -21,7 +21,7 @@ public class EditBannerCommandHandler : IBaseCommandHandler<EditBannerCommand>
     }
     public async Task<OperationResult> Handle(EditBannerCommand request, CancellationToken cancellationToken)
     {
-        var banner = await _bannerRepository.GetTracking(request.Id, cancellationToken);
+        var banner = await _bannerRepository.GetTrackingAsync(request.Id, cancellationToken);
         if(banner == null) return OperationResult.NotFound();
         
         var imageName = banner.ImageName;

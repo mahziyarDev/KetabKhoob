@@ -4,8 +4,9 @@ namespace Shop.Domain.SellerAgg.Repository;
 
 public interface ISellerRepository : IBaseRepository<Seller>
 {
-    Task<InventoryResult?> GetInventoryByIdAsync(long inventoryId);
+    Task<InventoryResult?> GetInventoryByIdAsync(long Id);
 }
+
 
 public class InventoryResult
 {

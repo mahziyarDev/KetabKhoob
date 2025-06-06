@@ -15,7 +15,7 @@ internal class ChargeUserWalletCommandHandler : IBaseCommandHandler<ChargeUserWa
 
     public async Task<OperationResult> Handle(ChargeUserWalletCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetTracking(request.UserId,cancellationToken);
+        var user = await _userRepository.GetTrackingAsync(request.UserId,cancellationToken);
         if (user == null)
             return OperationResult.NotFound();
 

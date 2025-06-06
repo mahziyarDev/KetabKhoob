@@ -3,6 +3,7 @@ using Shop.Domain.OrderAgg.Enum;
 using Shop.Domain.OrderAgg.ValueObject;
 using System.Reflection.Metadata.Ecma335;
 using Common.Domain.Exceptions;
+using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.OrderAgg
 {

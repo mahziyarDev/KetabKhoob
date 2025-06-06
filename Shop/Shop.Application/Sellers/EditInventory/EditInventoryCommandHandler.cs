@@ -15,7 +15,7 @@ public class EditInventoryCommandHandler : IBaseCommandHandler<EditInventoryComm
 
     public async Task<OperationResult> Handle(EditInventoryCommand request, CancellationToken cancellationToken)
     {
-        var seller = await _sellerRepository.GetTracking(request.SellerId,cancellationToken);
+        var seller = await _sellerRepository.GetTrackingAsync(request.SellerId,cancellationToken);
         if (seller == null)
             return OperationResult.NotFound();
         //این مورد در دامین چک شده است

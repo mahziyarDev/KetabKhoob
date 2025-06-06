@@ -7,6 +7,8 @@ namespace Shop.Domain.UserAgg;
 
 public class User : AggregateRoot
 {
+    #region Properties
+
     public string Name { get; private set; }
     public string AvatarName { get; set; }
     public string Family { get; private set; }
@@ -17,6 +19,9 @@ public class User : AggregateRoot
     public List<UserRole> Roles { get; private set; }
     public List<Wallet> Wallets { get; private set; }
     public List<UserAddress> Addresses { get; private set; }
+    public List<UserToken> Tokens { get; }
+
+    #endregion
 
     public User(string name, string family, string phoneNumber, string email, string password,
         Gender gender,
@@ -29,6 +34,7 @@ public class User : AggregateRoot
         Email = email;
         Password = password;
         Gender = gender;
+        Tokens = new();
     }
 
     public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)

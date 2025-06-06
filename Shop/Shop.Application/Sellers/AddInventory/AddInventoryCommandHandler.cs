@@ -16,7 +16,7 @@ public class AddInventoryCommandHandler : IBaseCommandHandler<AddInventoryComman
 
     public async Task<OperationResult> Handle(AddInventoryCommand request, CancellationToken cancellationToken)
     {
-        var seller = await _sellerRepository.GetTracking(request.SellerId,cancellationToken);
+        var seller = await _sellerRepository.GetTrackingAsync(request.SellerId,cancellationToken);
         if (seller == null)
             return OperationResult.NotFound();
         var inventory =

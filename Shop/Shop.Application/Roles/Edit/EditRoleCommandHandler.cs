@@ -15,7 +15,7 @@ public class EditRoleCommandHandler : IBaseCommandHandler<EditRoleCommand>
     }
     public async Task<OperationResult> Handle(EditRoleCommand request, CancellationToken cancellationToken)
     {
-        var role = await _roleRepository.GetTracking(request.Id,cancellationToken);
+        var role = await _roleRepository.GetTrackingAsync(request.Id,cancellationToken);
         if (role == null) return OperationResult.NotFound();
         
         role.Edit(request.Title);

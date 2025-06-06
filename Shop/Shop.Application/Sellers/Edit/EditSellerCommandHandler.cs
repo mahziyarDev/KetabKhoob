@@ -14,7 +14,7 @@ public class EditSellerCommandHandler(ISellerRepository sellerRepository, ISelle
     
     public async Task<OperationResult> Handle(EditSellerCommand request, CancellationToken cancellationToken)
     {
-        var seller = await _sellerRepository.GetTracking(request.Id,cancellationToken);
+        var seller = await _sellerRepository.GetTrackingAsync(request.Id,cancellationToken);
         if (seller == null)
         {
             return OperationResult.NotFound();

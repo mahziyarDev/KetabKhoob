@@ -1,9 +1,10 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
+using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.OrderAgg;
 
-public class OrderAddress
+public class OrderAddress : BaseEntity
 {
     
      public OrderAddress(string shire, string city, string postalCode, string postalAddress, string name, string family, string nationalCode)
@@ -18,6 +19,7 @@ public class OrderAddress
         NationalCode = nationalCode;
         
     }
+     
     public long OrderId { get; internal set; }
     public string Shire { get; private set; }
     public string City { get; private set; }
@@ -26,6 +28,7 @@ public class OrderAddress
     public string Name { get; private set; }
     public string Family { get; private set; }
     public string NationalCode { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; }
     public Order Order { get; set; }
     public void Edit(string shire, string city, string postalCode, string postalAddress,
         string name, string family, string nationalCode)

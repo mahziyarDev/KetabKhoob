@@ -25,7 +25,7 @@ internal class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
 
     public async Task<OperationResult> Handle(EditUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetTracking(request.UserId,cancellationToken);
+        var user = await _userRepository.GetTrackingAsync(request.UserId,cancellationToken);
         if (user == null)
             return OperationResult.NotFound();
 

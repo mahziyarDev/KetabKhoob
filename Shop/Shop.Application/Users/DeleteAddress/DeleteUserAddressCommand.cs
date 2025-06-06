@@ -23,7 +23,7 @@ public class DeleteUserAddressCommandHandler : IBaseCommandHandler<DeleteUserAdd
 
     public async Task<OperationResult> Handle(DeleteUserAddressCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetTracking(request.UserId,cancellationToken);
+        var user = await _userRepository.GetTrackingAsync(request.UserId,cancellationToken);
         if (user == null)
             return OperationResult.NotFound();
 

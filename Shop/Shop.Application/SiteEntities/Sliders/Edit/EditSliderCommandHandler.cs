@@ -20,7 +20,7 @@ internal class EditSliderCommandHandler : IBaseCommandHandler<EditSliderCommand>
     }
     public async Task<OperationResult> Handle(EditSliderCommand request, CancellationToken cancellationToken)
     {
-        var slider = await _sliderRepository.GetTracking(request.Id,cancellationToken);
+        var slider = await _sliderRepository.GetTrackingAsync(request.Id,cancellationToken);
         if (slider == null)
             return OperationResult.NotFound();
         var imageName = slider.ImageName;
