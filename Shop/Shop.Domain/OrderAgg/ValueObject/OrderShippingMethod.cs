@@ -1,8 +1,8 @@
 ﻿namespace Shop.Domain.OrderAgg.ValueObject;
 
-public class ShippingMethod : Common.Domain.ValueObject
+public class OrderShippingMethod : Common.Domain.ValueObject
 {
-    public ShippingMethod(string shippingType, int shippingCost)
+    public OrderShippingMethod(string shippingType, int shippingCost)
     {
         ShippingType = shippingType;
         ShippingCost = shippingCost;

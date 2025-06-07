@@ -17,6 +17,11 @@ public class DapperContext
 
     public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
     
-    public string Inventories = "[Seller].Inventories";
-    
+    public string Inventories = "[Seller].Inventories";    
+    public string UserAddresses => "[user].Addresses";
+    public string OrderItems => "[order].Items";
+    public string Products => "[product].Products";
+    public string Sellers => "[seller].Sellers";
+    public string UserTokens => "[user].Tokens";
+
 }

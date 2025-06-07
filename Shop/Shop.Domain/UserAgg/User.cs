@@ -14,6 +14,7 @@ public class User : AggregateRoot
     public string Family { get; private set; }
     public string PhoneNumber { get; private set; }
     public string Email { get; private set; }
+    public bool IsActive { get; set; }
     public string Password { get; private set; }
     public Gender Gender { get; private set; }
     public List<UserRole> Roles { get; private set; }
