@@ -32,16 +32,21 @@ public class BaseFilter
     }
 }
 
+/// <summary>
+/// نقش یک مارکر را دارا میباشد که تعیین کنیم جنس TParam از این نوع میباشد 
+/// درواقع مقادیری را برای فیلتر کردن لیست استفاده میکند که علاوه مقادیر pagination است
+/// </summary>
 public class BaseFilterParam
 {
     public int PageId { get; set; } = 1;
     public int Take { get; set; } = 10;
 }
 
+
 public class BaseFilter<TData, TParam> : BaseFilter
 where TParam : BaseFilterParam
 where TData : BaseDto
 {
-    public List<TData> Data { get; set; }
-    public TParam FilterParams { get; set; }
+    public List<TData>? Data { get; set; }
+    public TParam? FilterParams { get; set; }
 }

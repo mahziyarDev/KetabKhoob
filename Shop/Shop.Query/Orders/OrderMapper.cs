@@ -42,13 +42,8 @@ internal static class OrderMapper
             .QueryAsync<OrderItemDto>(sql, new {orderId = orderDto.Id});
         return result.ToList();
     }
-    public static OrderFilterData MapFilterData(this Order order, ShopContext context)
+    public static OrderFilterData MapFilterData(this Order order, string fullName)
     {
-        var userFullName = context.Users
-            .Where(r => r.Id == order.UserId)
-            .Select(u => $"{u.Name} {u.Family}")
-            .First();
-
         return new OrderFilterData()
         {
             Status = order.OrderStatus,
@@ -59,7 +54,7 @@ internal static class OrderMapper
             Shire = order.Address?.Shire,
             TotalItemCount = order.ItemCount,
             TotalPrice = order.TotalPrice,
-            UserFullName = userFullName,
+            UserFullName = fullName,
             UserId = order.UserId
         };
     }
