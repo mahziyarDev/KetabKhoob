@@ -1,6 +1,7 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
 using Shop.Domain.OrderAgg.Enum;
+using Shop.Domain.OrderAgg.Events;
 using Shop.Domain.OrderAgg.ValueObject;
 
 namespace Shop.Domain.OrderAgg
@@ -69,6 +70,13 @@ namespace Shop.Domain.OrderAgg
             var currentItem = Items.FirstOrDefault(x => x.Id == orderItemId);
             if (currentItem == null) throw new NullOrEmptyDomainDataException("چیزی یافت نشد");
             currentItem.ChangeCount(newCount);
+        }
+
+        public void Finally()
+        {
+            OrderStatus = OrderStatus.Finally;
+            LastUpdate = DateTime.Now;
+            AddDomainEvent(new OrderFinalized(Id));
         }
         public void IncreaseItemCount(long itemId, int count)
         {

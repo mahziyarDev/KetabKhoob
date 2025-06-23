@@ -6,11 +6,11 @@ namespace Shop.Domain.UserAgg;
 
 public class UserAddress : BaseEntity
 {
+    private UserAddress() { }
     private UserAddress(PhoneNumber phoneNumber)
     {
         PhoneNumber = phoneNumber;
     }
-
     public UserAddress(string shire, string city, string postalCode, string postalAddress, string name, string family,
         string nationalCode, PhoneNumber phoneNumber)
     {

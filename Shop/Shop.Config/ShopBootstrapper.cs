@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using Common.Application.FileUtil.Interfaces;
+using Common.Application.FileUtil.Services;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Application;
@@ -35,6 +37,7 @@ namespace Shop.Config
             service.AddTransient<IProductDomainService, ProductDomainService>();
             service.AddTransient<ISellerDomainService, SellerDomainService>();
             service.AddTransient<IUserDomainService, UserDomainService>();
+            service.AddTransient<IFileService,FileService>();
 
         }
     }

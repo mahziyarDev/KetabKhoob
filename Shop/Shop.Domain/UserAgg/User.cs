@@ -23,6 +23,7 @@ public class User : AggregateRoot
     public List<UserToken> Tokens { get; }
 
     #endregion
+    private User() { }
 
     public User(string name, string family, string phoneNumber, string email, string password,
         Gender gender,
@@ -66,7 +67,32 @@ public class User : AggregateRoot
         address.UserId = Id;
         Addresses.Add(address);
     }
+    public void ChangePassword(string newPassword)
+    {
+        NullOrEmptyDomainDataException.CheckString(newPassword, nameof(newPassword));
 
+        Password = newPassword;
+    }
+    public void AddToken(string hashJwtToken, string hashRefreshToken, DateTime tokenExpireDate, DateTime refreshTokenExpireDate, string device)
+    {
+        var activeTokenCount = Tokens.Count(c => c.RefreshTokenExpireDate > DateTime.Now);
+        if (activeTokenCount == 3)
+            throw new InvalidDomainDataException("امکان استفاده از 4 دستگاه همزمان وجود ندارد");
+
+        var token = new UserToken(hashJwtToken, hashRefreshToken, tokenExpireDate, refreshTokenExpireDate, device);
+        token.UserId = Id;
+        Tokens.Add(token);
+    }
+
+    public string RemoveToken(long tokenId)
+    {
+        var token = Tokens.FirstOrDefault(f => f.Id == tokenId);
+        if (token == null)
+            throw new InvalidDomainDataException("invalid TokenId");
+
+        Tokens.Remove(token);
+        return token.HashJwtToken;
+    }
     public void EditAddress(UserAddress address, long addressId)
     {
         var oldAddress = Addresses.FirstOrDefault(f => f.Id == addressId);
@@ -85,7 +111,18 @@ public class User : AggregateRoot
 
         Addresses.Remove(oldAddress);
     }
+    public void SetActiveAddress(long addressId)
+    {
+        var currentAddress = Addresses.FirstOrDefault(f => f.Id == addressId);
+        if (currentAddress == null)
+            throw new NullOrEmptyDomainDataException("Address Not found");
 
+        foreach (var address in Addresses)
+        {
+            address.SetDeActive();
+        }
+        currentAddress.SetActive();
+    }
     public void ChargeWallet(Wallet wallet)
     {
         Wallets.Add(wallet);

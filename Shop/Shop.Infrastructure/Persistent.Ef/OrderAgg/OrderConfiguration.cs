@@ -38,14 +38,17 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
             option.Property(b => b.Family)
                 .IsRequired().HasMaxLength(50);
 
-            option.Property(b => b.PhoneNumber)
-                .IsRequired().HasMaxLength(12);
-
             option.Property(b => b.NationalCode)
                 .IsRequired().HasMaxLength(10);
 
             option.Property(b => b.PostalCode)
                 .IsRequired().HasMaxLength(20);
+            option.OwnsOne(c => c.PhoneNumber, config =>
+            {
+                config.Property(b => b.Value)
+                    .HasColumnName("PhoneNumber")
+                    .IsRequired().HasMaxLength(11);
+            });
         });
 
         builder.OwnsOne(b => b.Discount, option =>

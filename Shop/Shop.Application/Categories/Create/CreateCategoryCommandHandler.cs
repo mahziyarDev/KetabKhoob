@@ -3,27 +3,25 @@ using Shop.Domain.CategoryAgg;
 using Shop.Domain.CategoryAgg.Repository;
 using Shop.Domain.CategoryAgg.Services;
 
-namespace Shop.Application.Categories.Create;
-
-public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand>
+namespace Shop.Application.Categories.Create
 {
-    private readonly ICategoryRepository _categoryRepository;
-    private readonly ICategoryDomainService _categoryDomainService;
+    public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand,long>
+    {
+        private readonly ICategoryRepository _repository;
+        private readonly ICategoryDomainService _domainServicer;
 
-    /// <summary></summary>
-    /// <param name="categoryRepository"></param>
-    /// <param name="categoryDomainService"></param>
-    public CreateCategoryCommandHandler(ICategoryRepository categoryRepository, ICategoryDomainService categoryDomainService)
-    {
-        _categoryRepository = categoryRepository;
-        _categoryDomainService = categoryDomainService;
-    }
-    
-    public async Task<OperationResult> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
-    {
-        var category = new Category(request.Title,request.Slug,request.SeoData,_categoryDomainService);
-        await _categoryRepository.AddAsync(category,cancellationToken);
-        await _categoryRepository.SaveChangeAsync(cancellationToken);
-        return OperationResult.Success();
+        public CreateCategoryCommandHandler(ICategoryRepository repository, ICategoryDomainService domainServicer)
+        {
+            _repository = repository;
+            _domainServicer = domainServicer;
+        }
+
+        public async Task<OperationResult<long>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        {
+            var category = new Category(request.Title, request.Slug, request.SeoData, _domainServicer);
+             _repository.Add(category);
+            await _repository.SaveChangeAsync(cancellationToken);
+            return OperationResult<long>.Success(category.Id);
+        }
     }
 }

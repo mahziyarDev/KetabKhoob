@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Shop.Application.Users.Register;
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterCommand>
+public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
     public RegisterUserCommandValidator()
     {
